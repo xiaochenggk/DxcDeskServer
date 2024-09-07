@@ -1,1 +1,1 @@
-DxcDeskServer
+Server
