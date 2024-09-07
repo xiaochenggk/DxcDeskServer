@@ -1,0 +1,126 @@
+syntax = "proto3";
+package BigPack ;
+
+option optimize_for=SPEED;
+option java_package="com.javacgo.qty.protocol" ;
+option java_outer_classname="BigPack" ;
+//
+message Exchange {
+    enum DataType{
+        //心跳
+        HEARTBEAT = 0 ;
+        //注册主机信息
+        REGISTER = 1;
+        //回复主机信息
+        REPLY_REGISTER = 2 ;
+
+        QUERY_HOST = 3 ;
+        REPLY_QUERY = 4 ;
+
+        //
+        REQUEST_AUTH = 5 ;
+        //
+        RESPONSE_AUTH = 6 ;
+        //图片参数
+        GET_DESKTOP = 7;
+        //
+        GIVE_IMG_PARA = 8 ;
+
+        GIVE_IMG = 9 ;
+        TILE_RECEIVED = 10 ;
+        //
+        MOUSE_MOVE = 11 ;
+        MOUSE_KEY = 12 ;
+        WHEEL_EVENT = 13 ;
+        KEY_BOARD = 14 ;
+    }
+    DataType dataType = 1;
+    string resourceID = 2;
+    string targetID = 3 ;
+    oneof dataBody{
+        CsRegisterHost hostInfo = 4 ;
+        ScReplyRegister replyInfo = 5 ;
+
+        CsQueryHost queryHost = 6 ;
+        ScReplyQuery replyQuery = 7 ;
+
+        CCRequestAuth requestAuth = 8 ;
+        CCResponseAuth responseAuth = 9 ;
+
+        CCGetDesktop getDesktop = 10 ;
+        CCGiveImgParameters imgParameters = 11 ;
+
+        CCGiveImg img = 12 ;
+        APTileReceived tileReceived= 13 ;
+
+        APMouseMove mouseMove = 14 ;
+        APMouseKey mouseKey = 15 ;
+        APWheelEvent wheelEvent = 16 ;
+        APKeyboard keyboard = 17 ;
+    }
+}
+message WMHeartbeat{
+}
+message CsRegisterHost {
+    string cpuID = 1;
+    //硬盘设备ID
+    string deviceID = 2;
+    //mac
+    string mac = 3 ;
+    //算出来的唯一ID
+    string uniqueID = 4 ;
+    //主控，被控，SESSION0,SESSION1
+    int32 type = 5 ;
+}
+message ScReplyRegister{
+    bool success = 1 ;
+    string registerId = 2 ;
+}
+message CsQueryHost{
+}
+message ScReplyQuery{
+    bool ifExitHost = 1 ;
+    string queryMessage = 2 ;
+}
+message  CCRequestAuth{
+    string authPass = 1;
+}
+message  CCResponseAuth{
+    bool success = 1 ;
+    string info = 2;
+}
+message CCGetDesktop{
+}
+message CCGiveImgParameters{
+    int32 width = 1 ;
+    int32 height = 2 ;
+    int32 rectWidth = 3 ;
+}
+message CCGiveImg{
+    int32 posX = 1 ;
+    int32 posY = 2 ;
+    int32 tileNum = 3 ;
+    bytes imgData = 4 ;
+}
+message APTileReceived{
+    int32 tileNum = 1 ;
+}
+message APMouseMove{
+    int32 pointX = 1 ;
+    int32 pointY = 2 ;
+}
+message APMouseKey{
+    //鼠标左键，右键或者中键，其他
+    int32 keyCode = 1 ;
+    //state 一般表示按下或者松开
+    bool state = 2 ;
+}
+message APWheelEvent{
+    bool deltaPos = 1 ;
+}
+message APKeyboard{
+    int32 keyCode = 1;
+    bool state = 2 ;
+}
+
+
